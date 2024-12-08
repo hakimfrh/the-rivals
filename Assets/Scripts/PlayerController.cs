@@ -1,62 +1,80 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool FacingLeft { get { return facingLeft; } set { facingLeft = value; } }
+    public float moveSpeed;
+    public float jumpForce;
+    public float acceleration;
+    public float deceleration;
 
-    [SerializeField] private float moveSpeed = 1f;
+    public KeyCode Left;
+    public KeyCode Right;
+    public KeyCode Jump;
+    public KeyCode Shoot;
 
-    private PlayerControls playerControls;
-    private Vector2 movement;
-    private Rigidbody2D rb;
-    private Animator myAnimator;
-    private SpriteRenderer mySpriteRender;
+    private Rigidbody2D player;
+    private bool isGrounded = false;
+    private float currentSpeed;
+    private float targetSpeed = 0f;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        player = GetComponent<Rigidbody2D>();
 
-    private bool facingLeft = false;
-
-    private void Awake() {
-        playerControls = new PlayerControls();
-        rb = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponent<Animator>();
-        mySpriteRender = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable() {
-        playerControls.Enable();
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(Left) && Input.GetKey(Right))
+        {
+            targetSpeed = 0;
+        }
+        else if (Input.GetKey(Left))
+        {
+            targetSpeed = -moveSpeed;
+        }
+        else if (Input.GetKey(Right))
+        {
+            targetSpeed = moveSpeed;
+        }
+        else
+        {
+            targetSpeed = 0;
+        }
+
+        if (Input.GetKeyDown(Jump) && isGrounded)
+        {
+            player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
+        }
     }
+    void FixedUpdate()
+    {
+        // Smoothly lerp kecepatan horizontal
+        if (targetSpeed != 0)
+        {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
+        }
+        else
+        {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, 0, deceleration * Time.fixedDeltaTime);
+        }
 
-    private void Update() {
-        PlayerInput();
-    }X
-
-    private void FixedUpdate() {
-        AdjustPlayerFacingDirection();
-        Move();
+        // Terapkan kecepatan pada Rigidbody
+        player.linearVelocity = new Vector2(currentSpeed, player.linearVelocity.y);
     }
-
-    private void PlayerInput() {
-        movement = playerControls.Movement.Move.ReadValue<Vector2>();
-
-        myAnimator.SetFloat("moveX", movement.x);
-        myAnimator.SetFloat("moveY", movement.y);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
     }
-
-    private void Move() {
-        rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
-    }
-
-    private void AdjustPlayerFacingDirection() {
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
-
-        if (mousePos.x < playerScreenPoint.x) {
-            mySpriteRender.flipX = true;
-            FacingLeft = true;
-        } else {
-            mySpriteRender.flipX = false;
-            FacingLeft = false;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }
