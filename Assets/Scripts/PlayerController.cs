@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -16,10 +17,15 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = false;
     private float currentSpeed;
     private float targetSpeed = 0f;
+
+    private bool isFacingRight = true;
+
+    private Animator Anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
+        Anim = GetComponent<Animator>();
 
     }
 
@@ -33,16 +39,25 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKey(Left))
         {
             targetSpeed = -moveSpeed;
+            if (isFacingRight)
+            {
+                transform.Rotate(new Vector3(0, 180, 0));
+            }
+            isFacingRight = false;
         }
         else if (Input.GetKey(Right))
         {
             targetSpeed = moveSpeed;
+            if (!isFacingRight)
+            {
+                transform.Rotate(new Vector3(0, 180, 0));
+            }
+            isFacingRight = true;
         }
         else
         {
             targetSpeed = 0;
         }
-
         if (Input.GetKeyDown(Jump) && isGrounded)
         {
             player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
@@ -62,6 +77,8 @@ public class PlayerController : MonoBehaviour
 
         // Terapkan kecepatan pada Rigidbody
         player.linearVelocity = new Vector2(currentSpeed, player.linearVelocity.y);
+        Anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
+        Anim.SetBool("Grounded", isGrounded);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
