@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public KeyCode Right;
     public KeyCode Jump;
     public KeyCode Shoot;
+    public GameObject weapon;
 
     private Rigidbody2D player;
     private bool isGrounded = false;
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
             targetSpeed = moveSpeed;
             if (!isFacingRight)
             {
-                transform.Rotate(new Vector3(0, 180, 0));
+                transform.Rotate(new Vector3(0, -180, 0));
             }
             isFacingRight = true;
         }
@@ -61,6 +63,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(Jump) && isGrounded)
         {
             player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
+        }
+
+        if(Input.GetKeyDown(Shoot)){
+            if(!weapon.IsUnityNull()){
+                Instantiate(weapon, new Vector3(transform.position.x+(isFacingRight?1f:-1f), transform.position.y), transform.rotation);
+            }
         }
     }
     void FixedUpdate()
