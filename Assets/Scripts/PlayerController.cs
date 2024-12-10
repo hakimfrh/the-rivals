@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKeyDown(Shoot)){
             if(!weapon.IsUnityNull()){
-                Instantiate(weapon, new Vector3(transform.position.x+(isFacingRight?1f:-1f), transform.position.y), transform.rotation);
+                GameObject weaponObject = (GameObject)Instantiate(weapon, new Vector3(transform.position.x+(isFacingRight?1f:-1f), transform.position.y), transform.rotation);
             }
         }
     }
