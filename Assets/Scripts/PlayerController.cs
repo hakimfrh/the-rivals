@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = false;
     private float currentSpeed;
     private float targetSpeed = 0f;
-
+    private float lastAttackTime = 0f;
     private bool isFacingRight = true;
 
     private Animator Anim;
@@ -65,9 +65,16 @@ public class PlayerController : MonoBehaviour
             player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
         }
 
-        if(Input.GetKeyDown(Shoot)){
-            if(!weapon.IsUnityNull()){
-                GameObject weaponObject = (GameObject)Instantiate(weapon, new Vector3(transform.position.x+(isFacingRight?1f:-1f), transform.position.y), transform.rotation);
+        if (Input.GetKeyDown(Shoot))
+        {
+            if (!weapon.IsUnityNull())
+            {
+                W_Throwable weaponScript = weapon.GetComponent<W_Throwable>();
+                if (Time.time > lastAttackTime + weaponScript.colldown)
+                {
+                    Instantiate(weapon, new Vector3(transform.position.x + (isFacingRight ? 1f : -1f), transform.position.y), transform.rotation);
+                    lastAttackTime = Time.time;
+                }
             }
         }
     }

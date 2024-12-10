@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8420096080543502603}
   - component: {fileID: 1458959708098391451}
   - component: {fileID: 4843249235730583776}
-  - component: {fileID: 6454747857709091}
+  - component: {fileID: -3486553557697016288}
   m_Layer: 0
   m_Name: W_Stone
   m_TagString: Untagged
@@ -154,7 +154,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6454747857709091
+--- !u!114 &-3486553557697016288
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,4 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 18
+  rotationSpeed: 3
+  damage: 20
+  colldown: 1
   hitEffect: {fileID: 1895793373835597016, guid: 3302501bdb615434b98b3eed37fb4b0c, type: 3}
