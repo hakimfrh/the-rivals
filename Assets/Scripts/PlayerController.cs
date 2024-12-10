@@ -15,12 +15,17 @@ public class PlayerController : MonoBehaviour
     public KeyCode Shoot;
     public GameObject weapon;
 
+    //audio jumpnya
+    public AudioClip jumpSound;
+    public AudioClip attacksound;
+
     private Rigidbody2D player;
     private bool isGrounded = false;
     private float currentSpeed;
     private float targetSpeed = 0f;
     private float lastAttackTime = 0f;
     private bool isFacingRight = true;
+    private AudioSource audioSource;
 
     private Animator Anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,7 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         player = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
-
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     // Update is called once per frame
@@ -63,6 +68,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(Jump) && isGrounded)
         {
             player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
+            if (jumpSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(jumpSound);
+            }
         }
 
         if (Input.GetKeyDown(Shoot))
@@ -72,6 +81,7 @@ public class PlayerController : MonoBehaviour
                 W_Throwable weaponScript = weapon.GetComponent<W_Throwable>();
                 if (Time.time > lastAttackTime + weaponScript.colldown)
                 {
+                    audioSource.PlayOneShot(attacksound);
                     Instantiate(weapon, new Vector3(transform.position.x + (isFacingRight ? 1f : -1f), transform.position.y), transform.rotation);
                     lastAttackTime = Time.time;
                 }
