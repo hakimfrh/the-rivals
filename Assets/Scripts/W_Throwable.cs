@@ -7,6 +7,8 @@ public class W_Throwable : MonoBehaviour
     public float rotationSpeed;
     public float damage;
     public float colldown;
+    public AudioClip sfxThrow;
+    public AudioClip sfxHit;
     public GameObject hitEffect;
     private Rigidbody2D Rbody;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,11 +27,11 @@ public class W_Throwable : MonoBehaviour
     {
         if (other.gameObject.name == "Player1")
         {
-            FindAnyObjectByType<GameManager>().hitPlayer1(damage);
+            FindAnyObjectByType<GameManager>().hitPlayer1(damage, sfxHit);
         }
         if (other.gameObject.name == "Player2")
         {
-            FindAnyObjectByType<GameManager>().hitPlayer2(damage);
+            FindAnyObjectByType<GameManager>().hitPlayer2(damage, sfxHit);
         }
         Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(gameObject);

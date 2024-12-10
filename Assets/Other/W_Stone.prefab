@@ -170,4 +170,6 @@ MonoBehaviour:
   rotationSpeed: 3
   damage: 20
   colldown: 1
+  sfxThrow: {fileID: 8300000, guid: 667af426e2618134f9af8c7d4a133e3e, type: 3}
+  sfxHit: {fileID: 8300000, guid: df51756756edc1c4ab2a2711aa20cadc, type: 3}
   hitEffect: {fileID: 1895793373835597016, guid: 3302501bdb615434b98b3eed37fb4b0c, type: 3}

@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
 
     //audio jumpnya
     public AudioClip jumpSound;
-    public AudioClip attacksound;
+    public AudioClip attackSound;
+    public AudioClip dieSound;
+    public AudioClip hitSound;
 
     private Rigidbody2D player;
     private bool isGrounded = false;
@@ -77,11 +79,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(Shoot))
         {
             if (!weapon.IsUnityNull())
-            {
+            {   
                 W_Throwable weaponScript = weapon.GetComponent<W_Throwable>();
                 if (Time.time > lastAttackTime + weaponScript.colldown)
                 {
-                    audioSource.PlayOneShot(attacksound);
+                    if (attackSound != null && audioSource != null)
+                    {
+                        audioSource.PlayOneShot(attackSound);
+                    }
+                    if (attackSound != null && weaponScript.sfxThrow != null)
+                    {
+                        audioSource.PlayOneShot(weaponScript.sfxThrow);
+                    }
                     Instantiate(weapon, new Vector3(transform.position.x + (isFacingRight ? 1f : -1f), transform.position.y), transform.rotation);
                     lastAttackTime = Time.time;
                 }
@@ -119,4 +128,28 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+
+    public bool isFlipped()
+    {
+        return !isFacingRight;
+    }
+
+    public void sfxHit()
+    {
+        if (audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
+    }
+
+    public void playSfx(AudioClip audioClip)
+    {
+        if (audioSource != null && audioClip != null)
+        {
+            audioSource.PlayOneShot(audioClip);
+        }
+    }
+
+
 }
