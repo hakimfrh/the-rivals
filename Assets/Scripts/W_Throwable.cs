@@ -25,13 +25,10 @@ public class W_Throwable : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name == "Player1")
+        if (other.gameObject.CompareTag("Player"))
         {
-            FindAnyObjectByType<GameManager>().hitPlayer1(damage, sfxHit);
-        }
-        if (other.gameObject.name == "Player2")
-        {
-            FindAnyObjectByType<GameManager>().hitPlayer2(damage, sfxHit);
+            other.gameObject.GetComponent<PlayerController>().hit(damage);
+            other.gameObject.GetComponent<PlayerController>().playSfx(sfxHit);
         }
         Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(gameObject);

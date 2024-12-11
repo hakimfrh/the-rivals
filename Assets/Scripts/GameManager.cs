@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
 
     private float playerHealth1;
     private float playerHealth2;
-    private UI_HealthBar healthBar1;
-    private UI_HealthBar healthBar2;
     private AudioSource audioSource;
 
     bool isPlayerDie1 = false;
@@ -19,18 +17,16 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerHealth1 = playerHealth;
-        playerHealth2 = playerHealth;
-        healthBar1 = player1.GetComponentInChildren<UI_HealthBar>();
-        healthBar2 = player2.GetComponentInChildren<UI_HealthBar>();
-        healthBar1.updateHealth(playerHealth, playerHealth);
-        healthBar2.updateHealth(playerHealth, playerHealth);
         audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        playerHealth1 = player1.GetComponent<PlayerController>().getHealth();
+        playerHealth2 = player2.GetComponent<PlayerController>().getHealth();
+
         if (playerHealth1 <= 0 && !isPlayerDie1)
         {   
             PlayerController playerController = player1.GetComponent<PlayerController>();
@@ -53,25 +49,5 @@ public class GameManager : MonoBehaviour
         }
 
 
-    }
-    public void hitPlayer1(float damage, AudioClip itemHit)
-    {
-        playerHealth1 -= damage;
-        healthBar1.updateHealth(playerHealth1, playerHealth);
-        player1.GetComponent<PlayerController>().sfxHit();
-        if(itemHit != null){
-            player1.GetComponent<PlayerController>().playSfx(itemHit);
-        }
-
-    }
-
-    public void hitPlayer2(float damage, AudioClip itemHit)
-    {
-        playerHealth2 -= damage;
-        healthBar2.updateHealth(playerHealth2, playerHealth);
-        player2.GetComponent<PlayerController>().sfxHit();
-        if(itemHit != null){
-            player2.GetComponent<PlayerController>().playSfx(itemHit);
-        }
     }
 }

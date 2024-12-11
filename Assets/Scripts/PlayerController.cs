@@ -22,20 +22,26 @@ public class PlayerController : MonoBehaviour
     public AudioClip hitSound;
 
     private Rigidbody2D player;
+    private UI_HealthBar healthBar;
+    private AudioSource audioSource;
+    private GameManager gameManager;
+    private Animator Anim;
+    private float playerHealth;
     private bool isGrounded = false;
     private float currentSpeed;
     private float targetSpeed = 0f;
     private float lastAttackTime = 0f;
     private bool isFacingRight = true;
-    private AudioSource audioSource;
-
-    private Animator Anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
         audioSource = GetComponentInChildren<AudioSource>();
+        gameManager = FindAnyObjectByType<GameManager>();
+        healthBar = GetComponentInChildren<UI_HealthBar>();
+        playerHealth = gameManager.playerHealth;
+        healthBar.updateHealth(playerHealth, gameManager.playerHealth);
     }
 
     // Update is called once per frame
@@ -120,6 +126,9 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+        if(collision.gameObject.CompareTag("Border")){
+            hit(9999);
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -135,12 +144,18 @@ public class PlayerController : MonoBehaviour
         return !isFacingRight;
     }
 
-    public void sfxHit()
-    {
+    public void hit(float damage)
+    {   
+        playerHealth -= damage;
+        healthBar.updateHealth(playerHealth, gameManager.playerHealth);
         if (audioSource != null && hitSound != null)
         {
             audioSource.PlayOneShot(hitSound);
         }
+    }
+
+    public float getHealth(){
+        return playerHealth;
     }
 
     public void playSfx(AudioClip audioClip)

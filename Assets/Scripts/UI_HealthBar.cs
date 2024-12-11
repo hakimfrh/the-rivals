@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 public class UI_HealthBar : MonoBehaviour
@@ -23,6 +24,6 @@ public class UI_HealthBar : MonoBehaviour
     }
 
     public void updateHealth(float health, float maxHealth){
-        slider.value = health/maxHealth;
+        slider.value = math.clamp(health/maxHealth,0,1);
     }
 }
