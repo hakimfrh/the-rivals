@@ -83,6 +83,8 @@ public class PlayerController : MonoBehaviour
                 W_Throwable weaponScript = weapon.GetComponent<W_Throwable>();
                 if (Time.time > lastAttackTime + weaponScript.colldown)
                 {
+                    Instantiate(weapon, new Vector3(transform.position.x + (isFacingRight ? 1f : -1f), transform.position.y), transform.rotation);
+                    lastAttackTime = Time.time;
                     if (attackSound != null && audioSource != null)
                     {
                         audioSource.PlayOneShot(attackSound);
@@ -91,8 +93,6 @@ public class PlayerController : MonoBehaviour
                     {
                         audioSource.PlayOneShot(weaponScript.sfxThrow);
                     }
-                    Instantiate(weapon, new Vector3(transform.position.x + (isFacingRight ? 1f : -1f), transform.position.y), transform.rotation);
-                    lastAttackTime = Time.time;
                 }
             }
         }

@@ -4176,7 +4176,7 @@ MonoBehaviour:
   Jump: 119
   Shoot: 102
   weapon: {fileID: 3003369687305345772, guid: 7956a15e862354940b62fa4eab3162ec, type: 3}
-  jumpSound: {fileID: 8300000, guid: 2e973f6b9883b8d41b939b210ac48c33, type: 3}
+  jumpSound: {fileID: 8300000, guid: c2458ee567a2c0341b381c5b13377b52, type: 3}
   attackSound: {fileID: 8300000, guid: 687833479ab61104796966a6c5f18214, type: 3}
   dieSound: {fileID: 8300000, guid: 8a0425d36124ade43a5fc4c9a0bbcdaa, type: 3}
   hitSound: {fileID: 8300000, guid: a2a76e8732970304a8b5ab539dcc70bf, type: 3}

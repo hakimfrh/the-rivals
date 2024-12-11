@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     private UI_HealthBar healthBar1;
     private UI_HealthBar healthBar2;
     private AudioSource audioSource;
+
+    bool isPlayerDie1 = false;
+    bool isPlayerDie2 = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,7 +31,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerHealth1 <= 0)
+        if (playerHealth1 <= 0 && !isPlayerDie1)
         {   
             PlayerController playerController = player1.GetComponent<PlayerController>();
             if(playerController.dieSound != null){
@@ -36,8 +39,9 @@ public class GameManager : MonoBehaviour
                 audioSource.PlayOneShot(sfxDie);
             }
             player1.SetActive(false);
+            isPlayerDie1 = true;
         }
-        if (playerHealth2 <= 0)
+        if (playerHealth2 <= 0 && !isPlayerDie2)
         {
             PlayerController playerController = player2.GetComponent<PlayerController>();
             if(playerController.dieSound != null){
@@ -45,6 +49,7 @@ public class GameManager : MonoBehaviour
                 audioSource.PlayOneShot(sfxDie);
             }
             player2.SetActive(false);
+            isPlayerDie2 = true;        
         }
 
 
