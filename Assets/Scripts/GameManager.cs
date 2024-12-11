@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     public float playerHealth;
     public GameObject player1;
     public GameObject player2;
+    public GameObject gameOverOverlay;
 
     private float playerHealth1;
     private float playerHealth2;
@@ -36,6 +38,8 @@ public class GameManager : MonoBehaviour
             }
             player1.SetActive(false);
             isPlayerDie1 = true;
+            gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 2 WIN");
+            gameOverOverlay.SetActive(true);
         }
         if (playerHealth2 <= 0 && !isPlayerDie2)
         {
@@ -46,8 +50,15 @@ public class GameManager : MonoBehaviour
             }
             player2.SetActive(false);
             isPlayerDie2 = true;        
+            gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 1 WIN");
+            gameOverOverlay.SetActive(true);
         }
+    }
 
-
+    public void restartGame(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }   
+    public void gotoMenu(){
+        SceneManager.LoadScene("Menu");
     }
 }
