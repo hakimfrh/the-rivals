@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private float playerHealth2;
     private AudioSource audioSource;
 
+    bool isGameFinish = false;
     bool isPlayerDie1 = false;
     bool isPlayerDie2 = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,35 +31,47 @@ public class GameManager : MonoBehaviour
         playerHealth2 = player2.GetComponent<PlayerController>().getHealth();
 
         if (playerHealth1 <= 0 && !isPlayerDie1)
-        {   
+        {
             PlayerController playerController = player1.GetComponent<PlayerController>();
-            if(playerController.dieSound != null){
+            if (playerController.dieSound != null)
+            {
                 AudioClip sfxDie = playerController.dieSound;
                 audioSource.PlayOneShot(sfxDie);
             }
             player1.SetActive(false);
             isPlayerDie1 = true;
-            gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 2 WIN");
-            gameOverOverlay.SetActive(true);
+            if (!isGameFinish)
+            {
+                gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 2 WIN");
+                gameOverOverlay.SetActive(true);
+                isGameFinish = true;
+            }
         }
         if (playerHealth2 <= 0 && !isPlayerDie2)
         {
             PlayerController playerController = player2.GetComponent<PlayerController>();
-            if(playerController.dieSound != null){
+            if (playerController.dieSound != null)
+            {
                 AudioClip sfxDie = playerController.dieSound;
                 audioSource.PlayOneShot(sfxDie);
             }
             player2.SetActive(false);
-            isPlayerDie2 = true;        
-            gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 1 WIN");
-            gameOverOverlay.SetActive(true);
+            isPlayerDie2 = true;
+            if (!isGameFinish)
+            {
+                gameOverOverlay.GetComponent<GameOver>().setup("PLAYER 1 WIN");
+                gameOverOverlay.SetActive(true);
+                isGameFinish = true;
+            }
         }
     }
 
-    public void restartGame(){
+    public void restartGame()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }   
-    public void gotoMenu(){
+    }
+    public void gotoMenu()
+    {
         SceneManager.LoadScene("Menu");
     }
 }
